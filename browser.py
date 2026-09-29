@@ -1,7 +1,6 @@
-import os
-import time
-from concurrent.futures import ThreadPoolExecutor
+import os, time
 
+from concurrent.futures import ThreadPoolExecutor
 from playwright.sync_api import sync_playwright
 
 HEADLESS = os.getenv("BROWSER_HEADLESS", "1") != "0"
@@ -52,7 +51,7 @@ def _run(fn, *args):
         return f"Browser error: {type(e).__name__}: {e}"
 
 
-def _open(url: str) -> str:
+def _open(url):
     page = _page()
     page.goto(url, wait_until="domcontentloaded", timeout=30000)
     try:
@@ -62,21 +61,21 @@ def _open(url: str) -> str:
     return _snapshot()
 
 
-def _click(element: int) -> str:
+def _click(element):
     _page().click(f'[data-agent-id="{int(element)}"]', timeout=5000)
     time.sleep(SETTLE_SECONDS)
     return _snapshot()
 
 
-def browser_open(url: str) -> str:
+def browser_open(url):
     return _run(_open, url)
 
 
-def browser_click(element: int) -> str:
+def browser_click(element):
     return _run(_click, element)
 
 
-def browser_read() -> str:
+def browser_read():
     return _run(_snapshot)
 
 

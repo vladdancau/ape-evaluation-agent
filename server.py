@@ -1,11 +1,7 @@
-import base64
-import uuid
-import warnings
+import base64, uuid, warnings, httpx, uvicorn
 
 warnings.filterwarnings("ignore", message=".*HTTP_413_REQUEST_ENTITY_TOO_LARGE.*")
 
-import httpx
-import uvicorn
 from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.events import EventQueue
@@ -78,14 +74,14 @@ async def message_to_content(message):
     return content
 
 
-def describe(content: str | list) -> str:
+def describe(content):
     """Short log line that shows images as placeholders instead of huge base64 strings."""
     if isinstance(content, str):
         return content
     return " ".join(c["text"] if c["type"] == "text" else "[IMAGE]" for c in content)
 
 
-def completed_task(context: RequestContext, reply: str) -> Task:
+def completed_task(context, reply):
     """A finished Task with the answer in every place a client might look:
     history (user + agent messages), status.message, and artifacts."""
     agent_msg = new_agent_text_message(reply, context_id=context.context_id, task_id=context.task_id)

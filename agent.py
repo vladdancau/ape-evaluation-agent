@@ -95,9 +95,7 @@ async def answer(content, context_id):
     system = SYSTEM_PROMPT + "\n\nMemories from previous sessions:\n" + (
         "\n".join(f"- {m}" for m in memories) if memories else "(none matched this question)")
 
-    messages = [{"role": "system", "content": system},
-                *memory.history(context_id),
-                {"role": "user", "content": content}]
+    messages = [{"role": "system", "content": system}, *memory.history(context_id), {"role": "user", "content": content}]
     memory.add(context_id, "user", text)
 
     reply = await run_loop(messages)
@@ -121,11 +119,11 @@ async def run_loop(messages):
                 trace(f"step {step}: final answer ({time.time() - start:.1f}s)")
                 return (msg.content or "").strip()
 
-            messages.append({"role": "assistant", "content": msg.content,
+            messages.append({"role": "assistant", "content": msg.content, 
                              "tool_calls": [{"id": tc.id, "type": "function",
-                                             "function": {"name": tc.function.name,
-                                                          "arguments": tc.function.arguments}}
-                                            for tc in tool_calls]})
+                             "function": {"name": tc.function.name,
+                             "arguments": tc.function.arguments}}
+                            for tc in tool_calls]})
 
             for tc in tool_calls:
                 trace(f"step {step}: TOOL {tc.function.name}({tc.function.arguments[:300]})")

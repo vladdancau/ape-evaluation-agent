@@ -1,7 +1,5 @@
-import re
-import sqlite3
-import threading
-import time
+import re, sqlite3, threading, time
+
 from pathlib import Path
 
 _STOPWORDS = {

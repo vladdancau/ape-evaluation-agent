@@ -1,13 +1,4 @@
-import ast
-import json
-import math
-import operator
-import os
-import subprocess
-import sys
-import tempfile
-
-import httpx
+import ast, json, math, operator, os, subprocess, sys, tempfile, httpx
 from bs4 import BeautifulSoup
 
 MAX_OUTPUT = 8000

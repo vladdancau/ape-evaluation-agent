@@ -9,8 +9,14 @@ web browsing, code execution, and memory across sessions.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 playwright install chromium
-cp .env.example .env
 ```
+
+Create a `.env` file in the project root and define your Anthropic API key:
+
+```bash
+ANTHROPIC_API_KEY=your-api-key-here
+```
+
 
 ## Run
 
