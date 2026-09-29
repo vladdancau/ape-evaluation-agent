@@ -17,5 +17,3 @@ cp .env.example .env
 ```bash
 python server.py    # A2A server on http://localhost:3000
 ```
-
-In the harness, enter `http://localhost:3000` as the service URL.
